@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: cqrs-app
+  namespace: cqrs-demo
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: cqrs-app
+
+  template:
+    metadata:
+      labels:
+        app: cqrs-app
+
+    spec:
+      containers:
+        - name: cqrs-app
+
+          image: moon045/cqrs-event-sourcing:v2
+          imagePullPolicy: Always
+
+          ports:
+            - containerPort: 4000
+
+          envFrom:
+            - configMapRef:
+                name: app-config
+
+            - secretRef:
+                name: app-secret
